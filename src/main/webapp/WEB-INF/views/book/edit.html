@@ -35,6 +35,16 @@
             <td></td>
         </tr>
         <tr>
+            <td>Category:</td>
+            <td>
+                <select name="category">
+                    <option th:each="p : ${category}"
+                            th:value="${p.id}"
+                            th:text="${p.name}"
+                            th:selected="(${p.id} == *{category.id})"></option>
+                </select>
+            </td>
+        <tr>
             <td></td>
             <td><input type="submit" value="Update customer"></td>
         </tr>

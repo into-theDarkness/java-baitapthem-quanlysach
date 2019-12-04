@@ -4,16 +4,17 @@ import org.hibernate.annotations.GeneratorType;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
+import org.springframework.data.web.PageableDefault;
 import org.springframework.stereotype.Controller;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.ModelAttribute;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.ModelAndView;
 import tranminhduc.pro.model.Book;
 import tranminhduc.pro.model.Category;
 import tranminhduc.pro.service.BookService;
 import tranminhduc.pro.service.CategoryService;
+
+import javax.swing.text.html.Option;
+import java.util.Optional;
 
 @Controller
 public class BookController {
@@ -36,11 +37,16 @@ public class BookController {
         return modelAndView;
     }
     @GetMapping("/books")
-    public ModelAndView listBook(Pageable pageable){
-        Page<Book> books = bookService.findAll(pageable);
-        ModelAndView modelAndView = new ModelAndView("book/list");
-        modelAndView.addObject("books", books);
-        return modelAndView;
+    public ModelAndView listBook(@RequestParam("s") Optional<String> s, @PageableDefault(size = 5) Pageable pageable){
+        Page<Book> books;
+        if(s.isPresent()){
+            books =bookService.findAllByNameContaining(s.get(), pageable);
+        } else {
+            books = bookService.findAll(pageable);
+        }
+            ModelAndView modelAndView = new ModelAndView("book/list");
+            modelAndView.addObject("books", books);
+            return modelAndView;
     }
     @GetMapping("/edit-book/{id}")
     public ModelAndView showEditForm(@PathVariable("id") Long id){
@@ -87,6 +93,20 @@ public class BookController {
     @GetMapping("/book-manager")
     public ModelAndView bookManager(){
         ModelAndView modelAndView = new ModelAndView("index");
+        return modelAndView;
+    }
+    @GetMapping("/view-category/{id}")
+    public ModelAndView viewProvince(@PathVariable("id") Long id){
+        Category category = categoryService.findById(id);
+        if(category == null){
+            return new ModelAndView("/error");
+        }
+
+        Iterable<Book> books = bookService.findAllByCategory(category);
+
+        ModelAndView modelAndView = new ModelAndView("/category/view");
+        modelAndView.addObject("category", category);
+        modelAndView.addObject("books", books);
         return modelAndView;
     }
 }

@@ -4,6 +4,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import tranminhduc.pro.model.Book;
+import tranminhduc.pro.model.Category;
 import tranminhduc.pro.repository.BookRepository;
 import tranminhduc.pro.service.BookService;
 
@@ -30,5 +31,14 @@ public class BookServiceImpl implements BookService {
     public void remove(Long id) {
         bookRepository.delete(id);
 
+    }
+    @Override
+    public Iterable<Book> findAllByCategory(Category category) {
+        return bookRepository.findAllByCategory(category);
+    }
+
+    @Override
+    public Page<Book> findAllByNameContaining(String name, Pageable pageable) {
+        return bookRepository.findAllByNameContaining(name, pageable);
     }
 }
