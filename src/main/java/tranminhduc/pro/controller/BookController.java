@@ -11,10 +11,14 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.servlet.ModelAndView;
 import tranminhduc.pro.model.Book;
+import tranminhduc.pro.model.Category;
 import tranminhduc.pro.service.BookService;
+import tranminhduc.pro.service.CategoryService;
 
 @Controller
 public class BookController {
+    @Autowired
+    private CategoryService categoryService;
     @Autowired
     private BookService bookService;
     @GetMapping("/create-book")
@@ -75,5 +79,14 @@ public class BookController {
     public String deleteBook(@ModelAttribute("book") Book book){
         bookService.remove(book.getId());
         return "redirect:books";
+    }
+    @ModelAttribute("category")
+    public Iterable<Category> categories(){
+        return categoryService.findAll();
+    }
+    @GetMapping("/book-manager")
+    public ModelAndView bookManager(){
+        ModelAndView modelAndView = new ModelAndView("index");
+        return modelAndView;
     }
 }

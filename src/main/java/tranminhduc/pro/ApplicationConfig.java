@@ -25,6 +25,7 @@ import org.thymeleaf.spring4.SpringTemplateEngine;
 import org.thymeleaf.spring4.templateresolver.SpringResourceTemplateResolver;
 import org.thymeleaf.spring4.view.ThymeleafViewResolver;
 import org.thymeleaf.templatemode.TemplateMode;
+import tranminhduc.pro.formatter.CategoryFormatter;
 import tranminhduc.pro.service.BookService;
 import tranminhduc.pro.service.CategoryService;
 import tranminhduc.pro.service.impl.BookServiceImpl;
@@ -134,10 +135,10 @@ public class ApplicationConfig extends WebMvcConfigurerAdapter implements Applic
         return new BookServiceImpl();
      }
 
-   // @Override
-   // public void addFormatters(FormatterRegistry registry) {
-   //     registry.addFormatter(new SupplierFormatter(applicationContext.getBean(SupplierService.class)));
-   // }
+    @Override
+   public void addFormatters(FormatterRegistry registry) {
+       registry.addFormatter(new CategoryFormatter(applicationContext.getBean(CategoryService.class)));
+   }
 
     @Bean
     public ResourceBundleMessageSource messageSource() {

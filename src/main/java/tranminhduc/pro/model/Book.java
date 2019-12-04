@@ -14,6 +14,7 @@ public class Book {
     private String author;
     private Float price;
     @ManyToOne
+    @JoinColumn(name="category_id")
     private Category category;
     public Book(){
     }
@@ -72,5 +73,6 @@ public class Book {
         this.dateOfPurchase = dateOfPurchase;
         this.author = author;
         this.price=price;
+        this.category = category;
     }
 }
