@@ -1,6 +1,9 @@
 package tranminhduc.pro.model;
 
 import javax.persistence.*;
+import javax.validation.constraints.Min;
+import javax.validation.constraints.NotEmpty;
+import javax.validation.constraints.Size;
 import java.sql.Date;
 
 @Entity
@@ -9,9 +12,14 @@ public class Book {
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
     private Long id;
+    @NotEmpty
+    @Size(min=2, max=50)
     private String name;
     private Date dateOfPurchase;
+    @NotEmpty
+    @Size(min=2, max=50)
     private String author;
+    @Min(0)
     private Float price;
     @ManyToOne
     @JoinColumn(name="category_id")
